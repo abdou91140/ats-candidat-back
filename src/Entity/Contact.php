@@ -18,7 +18,7 @@ class Contact
     #[ORM\Column]
     private  $fullname = null;
 
-    #[ORM\ManyToOne(User::class)]
+    #[ORM\ManyToOne(User::class,inversedBy:"contacts")]
     private $user = null;
 
     public function getId(): ?int
