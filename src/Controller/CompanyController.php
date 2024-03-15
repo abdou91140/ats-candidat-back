@@ -6,8 +6,10 @@ use App\Entity\Company;
 use App\Form\CompanyAutocompleteType;
 use App\Form\companyType;
 use App\Repository\companyRepository;
+use Doctrine\DBAL\Types\JsonType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -45,23 +47,9 @@ class CompanyController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_company_show', methods: ['GET'])]
-    public function show(Company $company, Request $request): Response
+    public function show(Company $company): Response
     {
-        $form = $this->createForm(CompanyAutocompleteType::class);
-
-        if ($request->isXmlHttpRequest()) {
-            // If it's an Ajax request, render only the company details template as JSON
-            $html = $this->render('home/index.html.twig', [
-                'company' => $company,
-            ]);
-
-            return new JsonEncode(['html' => $html]);
-        }
-
-        // If it's a regular request, render the main template with the form and potential other content
-        return $this->render('home/index.html.twig', [
-            'user' => $this->getUser(),
-            'companyForm' => $form->createView(),
+        return $this->render('company/show.html.twig', [
             'company' => $company,
         ]);
     }

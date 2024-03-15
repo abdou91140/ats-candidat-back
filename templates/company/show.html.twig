@@ -1,23 +1,38 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}company{% endblock %}
+{% block title %}company
+{% endblock %}
 
 {% block body %}
-    <table class="table bg-white p-6 rounded-lg shadow-md">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ company.id }}</td>
-            </tr>
-            <tr>
-                <th>Nom</th>
-                <td>{{ company.name }}</td>
-                <th>Description</th>
-                <td>{{company.description}}</td>
-            </tr>
-        </tbody>
-    </table>
-    <a href="{{ path('app_company_edit', {'id': company.id}) }}">edit</a>
+    <div class="flex justify-center items-center h-screen">
 
-    {{ include('company/_delete_form.html.twig') }}
-{% endblock %}
+	<div class="flex justify-center">
+		<div class="w-full lg:w-3/4">
+			<table class="table-auto bg-white p-6 rounded-lg shadow-md">
+				<thead>
+					<tr>
+						<th class="px-4 py-2">Nom</th>
+
+						<th class="px-4 py-2">Description</th>
+						<th class="px-4 py-2">Date</th>
+						<th class="px-4 py-2">membres</th>
+						<th class="px-4 py-2">Website</th>
+					</tr>
+					<tr></tr>
+				</thead>
+				<tbody>
+					<td  colspan="2" class="px-4 py-2">{{ company.name }}</td>
+					<td class="px-4 py-2">{{ company.description }}</td>
+					<td class="px-4 py-2">{{ company.date }}</td>
+					<td class="px-4 py-2">{{ company.members }}</td>
+					<td colspan="2" class="px-4 py-2">{{ company.url }}</td>
+				</tbody>
+			</tr>
+		</tbody>
+	</table>
+	<div class="mt-4 flex justify-end">
+		<a href="{{ path('app_company_edit', {'id': company.id}) }}" ><button class="rounded bg-white">Edit</button></a>
+		{{ include('company/_delete_form.html.twig') }}
+	</div>
+</div></div>
+</div>{% endblock %}
