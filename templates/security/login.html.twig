@@ -3,14 +3,14 @@
 {% block title %}Connexion{% endblock %}
 
 {% block body %}
-    <div class="flex justify-center items-center h-screen">
-        <div class="max-w-md w-full bg-white p-6 rounded-lg shadow-md">
+<div class="flex w-full justify-center items-center mt-8 ">
+		<div class="w-full max-w-md text-blue p-6 rounded-lg mt-8">
             <form method="post">
                 {% if error %}
                     <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
                 {% endif %}
 
-            <h1 class="text-4xl mb-6">Connexion</h1>
+                <h1 class="text-4xl mb-6">Connexion</h1>
                 <label for="inputEmail">Email</label>
                 <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="w-full px-4 py-2 mb-2 border rounded" autocomplete="email" required autofocus>
 
@@ -19,9 +19,8 @@
 
                 <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
-                <button class="bg-blue-500 text-white px-4 py-2 rounded w-full" type="submit">
-                Envoyer
-                </button>
+			<button type="submit" class="bg-white text-blue px-4 py-2 rounded w-full mt-4">Envoyer</button>
+
             </form>
         </div>
     </div>

@@ -37,13 +37,14 @@ class UpdateDatabaseCommand extends Command
 
         // Specify the URL to scrape
         $scrapingUrl = '';
-        $years = ['2023', '2022', '2021'];
-
+        $years = ['2024', '2023', '2022', '2021', '2020', '2019', '2018'];
+        $io->progressStart();
         foreach ($years as $year) {
             $scrapingUrl =  $this->url . $year;
-
             $this->companyScraper->scrapeCompaniesData($scrapingUrl);
+            $io->progressAdvance();
         }
+        $io->progressFinish();
         $io->success('Database updated successfully.');
 
         return Command::SUCCESS;

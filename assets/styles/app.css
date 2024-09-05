@@ -5,3 +5,20 @@
 body {
     background-color: rgb(0, 0, 0);
 }
+
+img {
+    height: 100px !important;
+}
+
+.text-purple {
+    color: #ac66fb;
+}
+
+.text-blue {
+    color: #7597de;
+}
+
+a {
+    width: max-content;
+    width:auto;
+}

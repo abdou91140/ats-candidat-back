@@ -1,13 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Contact{% endblock %}
+{% block title %}Startup modification
+{% endblock %}
 
 {% block body %}
-    <h1>Edit Contact</h1>
-
-    {{ include('contact/_form.html.twig', {'button_label': 'Update'}) }}
-
-    <a href="{{ path('app_contact_index') }}">back to list</a>
-
-    {{ include('contact/_delete_form.html.twig') }}
+	<div class="flex justify-center items-center">
+		<div class="max-w-md w-full p-6 rounded-lg shadow-md">
+			<h1 class="text-4xl mb-6 text-blue font-semibold">Modifer les infos</h1>
+			{{ include('company/_form.html.twig', {'button_label': 'Update'}) }}
+		</div>
+	</div>
 {% endblock %}

@@ -1,0 +1,15 @@
+{{ form_start(form,{'attr':{'class':'text-blue'}}) }}
+{{ form_row(form.firstName, {'attr': {'class': 'mb-4 w-full px-4 py-2 border rounded'}}) }}
+{{ form_row(form.lastName, {'attr': {'class': 'mb-4 w-full px-4 py-2 border rounded'}}) }}
+{{ form_row(form.email, {'attr': {'class': 'mb-4 w-full px-4 py-2 border rounded'}}) }}
+
+{{ form_row(form.civility, {'attr': {'class': 'mb-4 w-full px-4 py-2 border rounded'}}) }}
+{{ form_row(form.phoneNumber, {'attr': {'class': 'mb-4 w-full px-4 py-2 border rounded'}}) }}
+{{ form_row(form.job, {'attr': {'class': 'mb-4 w-full px-4 py-2 border rounded'}}) }}
+{% if user.cv %}
+	<embed src="{{ asset('uploads/cv/' ~ user.cv) }}" type="application/pdf" width="100%" height="200px"/>
+	{% else %}
+{% endif %}
+{{ form_row(form.cv, {'attr': {'class': 'mb-4 w-full px-4 py-2 border rounded'}}) }}
+<button type="submit" class="bg-white text-blue px-4 py-2 rounded w-full">Enregistrer</button>
+{{ form_end(form) }}

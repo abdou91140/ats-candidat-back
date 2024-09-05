@@ -4,35 +4,62 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\CompanyRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CompanyRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    normalizationContext: ['groups' => ['company:output']],
+)]
+#[ApiFilter(SearchFilter::class, properties: ['type.name' => 'exact'])]
 class Company
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['company:output'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['company:output'])]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Groups(['company:output'])]
     private ?string $description = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['company:output'])]
     private ?string $date = null;
 
     #[ORM\Column(length: 100)]
+    #[Groups(['company:output'])]
     private ?string $size = null;
 
     #[ORM\Column(type: Types::TEXT)]
     private ?string $members = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['company:output'])]
     private ?string $url = null;
+
+    #[ORM\OneToMany(targetEntity: Contact::class, mappedBy: 'company')]
+    #[Groups(['company:output'])]
+    private Collection $contacts;
+
+    #[ORM\ManyToOne(inversedBy: 'companies', cascade: ['persist'])]
+    #[Groups(['company:output'])]
+    private ?Type $type = null;
+
+    public function __construct()
+    {
+        $this->contacts = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -107,6 +134,48 @@ class Company
     public function setUrl(?string $url): static
     {
         $this->url = $url;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Contact>
+     */
+    public function getContacts(): Collection
+    {
+        return $this->contacts;
+    }
+
+    public function addContact(Contact $contact): static
+    {
+        if (!$this->contacts->contains($contact)) {
+            $this->contacts->add($contact);
+            $contact->setCompany($this);
+        }
+
+        return $this;
+    }
+
+    public function removeContact(Contact $contact): static
+    {
+        if ($this->contacts->removeElement($contact)) {
+            // set the owning side to null (unless already changed)
+            if ($contact->getCompany() === $this) {
+                $contact->setCompany(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getType(): ?Type
+    {
+        return $this->type;
+    }
+
+    public function setType(?Type $type): static
+    {
+        $this->type = $type;
 
         return $this;
     }

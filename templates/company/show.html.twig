@@ -1,38 +1,50 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}company
+{% block title %}Startup
 {% endblock %}
 
 {% block body %}
-    <div class="flex justify-center items-center h-screen">
+	<div class="container mx-auto flex justify-center items-center">
+		<div class="flex flex-col gap-4 p-4">
+			<h1 class="text-4xl font-semibold mb-2 text-blue">{{ company.name }}</h1>
+			<date class="">{{ company.date }}</date>
+			<a href="{{ company.url }}" target="_blank">
+				<button type='button' class="rounded px-4 py-2 bg-white text-purple font-semibold">Website</button>
+			</a>
+			<div class="mt-4">
+				<p class="text-xl">Description:</p>
 
-	<div class="flex justify-center">
-		<div class="w-full lg:w-3/4">
-			<table class="table-auto bg-white p-6 rounded-lg shadow-md">
-				<thead>
-					<tr>
-						<th class="px-4 py-2">Nom</th>
+				<p class="text-purple">{{ company.description }}</p>
+			</div>
+			<div class="mt-4">
+				<p class="text-xl">Contact :</p>
+				<div class="flex">
+					{% for company in company.contacts %}
+						{{ company.fullname }}
 
-						<th class="px-4 py-2">Description</th>
-						<th class="px-4 py-2">Date</th>
-						<th class="px-4 py-2">membres</th>
-						<th class="px-4 py-2">Website</th>
-					</tr>
-					<tr></tr>
-				</thead>
-				<tbody>
-					<td  colspan="2" class="px-4 py-2">{{ company.name }}</td>
-					<td class="px-4 py-2">{{ company.description }}</td>
-					<td class="px-4 py-2">{{ company.date }}</td>
-					<td class="px-4 py-2">{{ company.members }}</td>
-					<td colspan="2" class="px-4 py-2">{{ company.url }}</td>
-				</tbody>
-			</tr>
-		</tbody>
-	</table>
-	<div class="mt-4 flex justify-end">
-		<a href="{{ path('app_company_edit', {'id': company.id}) }}" ><button class="rounded bg-white">Edit</button></a>
-		{{ include('company/_delete_form.html.twig') }}
+						<p class="text-blue font-semibold"></p>
+					{% if app.user %}	<a class="px-4 text-blue hover:underline" href="{{ path('app_contact_add',{'id': company.id}) }}">
+							<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+								<path stroke-linecap="round" stroke-linejoin="round" d="M18 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0ZM3 19.235v-.11a6.375 6.375 0 0 1 12.75 0v.109A12.318 12.318 0 0 1 9.374 21c-2.331 0-4.512-.645-6.374-1.766Z"/>
+							</svg>
+						</a>
+						{% endif %}
+					{% endfor %}
+				</div>
+			</div>
+
+
+			<div class="mt-4 flex justify-between">
+				<a href="{{ path('app_home') }}">
+					<button type="button" class="rounded px-4 py-2 bg-white text-purple font-semibold">Retour</button>
+				</a>
+
+				{%if app.user %}
+					<a href="{{ path('app_company_edit', {'id': company.id}) }}">
+						<button type="button" class="rounded px-4 py-2 bg-white text-purple font-semibold">Edit</button>
+					</a>
+				</div>
+			{% endif %}
+		</div>
 	</div>
-</div></div>
-</div>{% endblock %}
+{% endblock %}

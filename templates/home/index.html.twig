@@ -2,56 +2,29 @@
 
 {% block title %}Acceuil
 {% endblock %}
+
 {% block body %}
-	<div class="flex flex-col justify-between space-y-10 item-center mx-auto mt-8">
-		<div class="flex justify-center items-center h-screen">
-
-			<section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-				<div class="bg-white p-6 rounded-lg shadow-md">
-					<h2 class="text-xl font-semibold mb-4">Selectionne une entreprise</h2>
-					{{ form_start(companyForm) }}
-					{{ form_end(companyForm) }}
-				</div>
-
-				<div class="bg-white p-6 rounded-lg shadow-md">
-					<h2 class="text-xl font-semibold mb-4">Topic 2</h2>
-
-					{% if company is defined %}
-						<table class="table bg-white p-6 rounded-lg shadow-md">
-							<tbody>
-								<tr>
-									<th>Id</th>
-									<td>{{ company.id }}</td>
-								</tr>
-								<tr>
-									<th>Nom</th>
-									<td>{{ company.name }}</td>
-									<th>Description</th>
-									<td>{{ company.description }}</td>
-								</tr>
-							</tbody>
-						</table>
-					{% endif %}
-
-				</div>
-
-				<div class="bg-white p-6 rounded-lg shadow-md">
-					<h2 class="text-xl font-semibold mb-4">Topic 3</h2>
-					<p class="text-gray-600">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-				</div>
-			</section>
+	<div class="flex flex-col justify-between items-center mx-auto ">
+		<div class="flex justify-center items-center text-blue rounded-lg shadow-md">
+			<div class="bg-blue-100 p-6 rounded-lg">
+				<h1 class="text-4xl mb-6">Choisir une Startup</h1>
+				{{ form_start(companyForm) }}
+				{{ form_row(companyForm.startup) }}
+				{{ form_end(companyForm) }}
+			</div>
 		</div>
 	</div>
-</div>{% endblock %}{% block javascripts %}
-<script>
-	document.addEventListener( 'DOMContentLoaded', function () {
+{% endblock %}
+
+{% block javascripts %}
+	<script>
+		document.addEventListener( 'DOMContentLoaded', function () {
 
 
 
 
 
 const selects = document.getElementsByClassName( 'form-select' );
-
 Array.from( selects ).forEach( select => {
 
 
@@ -65,7 +38,6 @@ select.addEventListener( 'change', function () {
 
 
 const selectedCompanyId = this.value;
-
 // Redirect to the company page using the selected company ID
 window.location.href = `/company/${ selectedCompanyId }`;
 
@@ -86,4 +58,5 @@ window.location.href = `/company/${ selectedCompanyId }`;
 
 
 } );
-</script>{% endblock %}
+	</script>
+{% endblock %}

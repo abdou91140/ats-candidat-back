@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Welcome to Taf-Hunt!</title>
+		<style>
+			type="text/css" body,
+			html,
+			.body {
+				background: black !important;
+				color: white !important;
+				margin: 5 !important;
+				padding: 5 !important;
+			}
+
+			.container.header {
+				background: #f3f3f3;
+			}
+
+			.body-border {
+				border: 8px solid #663399;
+			}
+
+			h1 {
+				color: rgb(172, 102, 251);
+			}
+
+			h2 {
+				color: #7597de;
+			}
+
+			p {
+				color: white;
+			}
+		</style>
+	</head>
+	<body>
+		<spacer size="16"></spacer>
+
+		<center>
+			<container class="header">
+				<row>
+					<columns>
+						<h1 class="text-center">Welcome to you,</h1>
+						<h2>taf hunter !!!</h2>
+					</columns>
+				</row>
+			</container>
+
+			<container class="body-border">
+				<row>
+					<columns>
+						<spacer size="32"></spacer>
+						<center>
+							<img src="{{ absolute_url(asset('/public/images/Job-logo.png')) }}"/>
+						</center>
+						<spacer size="16"></spacer>
+						<h4>
+							<span>Hi
+								{{ user.firstName }}.</span>
+							Welcome to Taf-Hunt! We're thrilled to have you on board as we embark on a mission to streamline your job search. Armed with the extensive 500 Startups database and direct contacts to these visionary founders, navigating the job market becomes an exciting hunt. Rest assured, we've got just the right tools to make it a successful one!
+						</h4>
+						<center>
+							Best,
+							<spacer size="8"></spacer>
+
+							Abdoulaye, First hunter.
+							<menu>
+								<item href="{{ url('app_login') }}">taf-hunt.com</item>
+								<item href="#">Linkedin</item>
+								<item href="#">Facebook</item>
+								<item href="#">Instagram</item>
+							</menu>
+						</center>
+					</columns>
+				</row>
+				<spacer size="16"></spacer>
+			</center>
+		</body>
+	</body>
+</html></container></body></html>

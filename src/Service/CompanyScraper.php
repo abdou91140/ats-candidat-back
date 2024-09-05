@@ -3,17 +3,16 @@
 namespace App\Service;
 
 use App\Entity\Company;
-use DateTime;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use App\Entity\Contact;
+use App\Entity\Type;
 use Symfony\Component\BrowserKit\HttpBrowser;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
-use DateTimeZone;
 use Doctrine\ORM\EntityManagerInterface;
-use IntlDateFormatter;
 
-class CompanyScraper extends KernelTestCase
+
+class CompanyScraper 
 {
     private $url;
     private $entityManager;
@@ -38,11 +37,16 @@ class CompanyScraper extends KernelTestCase
         try {
             $browser = $this->getHttpBrowser();
             $browser->request('GET', $this->url);
-            $browser->request('GET', $url);
+            if ($url != null || $url != '') {
+                $browser->request('GET', $url);
+            } else {
+                return;
+            }
             $companyLinks = $this->extractCompanyLinks($browser->getCrawler());
             $this->fetchCompanyData($companyLinks);
         } catch (\Throwable $e) {
-            echo 'Error: ' . $e->getMessage();
+            //            echo 'Error: ' . $e->getMessage();
+            return;
         }
     }
 
@@ -67,7 +71,7 @@ class CompanyScraper extends KernelTestCase
                 $companyList = $this->extractCompanyData($companyDetailsCrawler);
                 $this->persistCompanyToDatabase($companyList);
             } catch (\Throwable $e) {
-                echo 'Error fetching data: ' . $e->getMessage();
+                 echo 'Error fetching data: ' . $e->getMessage();
             }
         }
 
@@ -82,7 +86,9 @@ class CompanyScraper extends KernelTestCase
         $companySize = $crawler->filter(".employees-no > .value")->text();
         $companyMembers = $crawler->filter(".members")->text();
         $companyWebsite = $crawler->filter(".web > .photo-container > .site-url")->text();
-        $responseData = ['name' => $companyName, 'description' => $companyDescription, 'date' => $companyDate,  'size' => $companySize, 'members' => $companyMembers, 'url' => $companyWebsite];
+        $companyMail = $crawler->filter(".contact-email > a:nth-child(1) > span:nth-child(2)")->text();
+        $companySector = $crawler->filter(".header-info > .sector")->text();
+        $responseData = ['name' => $companyName, 'description' => $companyDescription, 'date' => $companyDate,  'size' => $companySize, 'members' => $companyMembers, 'url' => $companyWebsite, 'mail' => $companyMail ? $companyMail : null, 'sector' => $companySector];
         return $responseData;
     }
     private function persistCompanyToDatabase(array $companyData)
@@ -90,20 +96,48 @@ class CompanyScraper extends KernelTestCase
         $existingCompany = $this->entityManager->getRepository(Company::class)->findOneBy([
             'name' => $companyData['name'],
         ]);
-
-        // If the company already exists, skip the insertion
         if ($existingCompany !== null) {
             return;
         }
         $companyEntity = new Company();
-        $companyEntity->setName($companyData['name']);
+        $companyEntity->setName(strtoupper($companyData['name']));
         $companyEntity->setDescription($companyData['description']);
         $companyEntity->setDate($companyData['date']);
         $companyEntity->setSize($companyData['size']);
+        $contact = $this->extractNames($companyData['members']);
+        $newContact = new Contact();
+        $newContact->setFullname($contact);
+        $newContact->setMail($companyData['mail']);
         $companyEntity->setMembers($companyData['members']);
         $companyEntity->setUrl($companyData['url']);
-
+        $type = new Type();
+        $newType = in_array($companyData['sector'], $type::LIST) ? $companyData['sector'] : null;
+        $companyEntity->setType($type->setName($newType));
+        $companyEntity->addContact($newContact);
+        $this->entityManager->persist($newContact);
         $this->entityManager->persist($companyEntity);
         $this->entityManager->flush();
+    }
+    function extractNames($string)
+    {
+        $people = "";
+
+        // Split the input string by newline character
+        $lines = explode("\n", $string);
+
+        foreach ($lines as $line) {
+            // Extract name and remove any titles or age
+            $name = trim(preg_replace('/[^\p{L}\s]|(?<=\b)(CEO|CTO)\b|\d+/u', '', $line));
+            // Split the name into first name and last name
+            $nameParts = explode(' ', $name);
+            // Extract first name and last name
+            $firstName = $nameParts[0];
+            $lastName = isset($nameParts[1]) ? $nameParts[1] : '';
+
+            // Add to the people array
+            $people = $firstName . "-" . $lastName;
+        }
+
+        return $people;
     }
 }

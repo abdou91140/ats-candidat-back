@@ -31,3 +31,7 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+    App\Service\CvUploader:
+        arguments:
+            $targetDirectory: '%kernel.project_dir%/public/uploads/cv' # Specify the target directory where files will be uploaded
+            $slugger: '@Symfony\Component\String\Slugger\SluggerInterface' 

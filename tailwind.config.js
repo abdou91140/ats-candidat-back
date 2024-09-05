@@ -5,7 +5,11 @@ module.exports = {
     "./templates/**/*.html.twig",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        white: '#ffffff', // Add white color definition
+      },
+    },
     container: {
       center: true,
       padding: {
@@ -18,4 +22,8 @@ module.exports = {
     },
   },
   plugins: [],
+  corePlugins: {
+    // Disable all text color utilities
+    textColor: false,
+  },
 }

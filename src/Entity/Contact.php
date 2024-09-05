@@ -19,7 +19,13 @@ class Contact
     private  $fullname = null;
 
     #[ORM\ManyToOne(User::class,inversedBy:"contacts")]
-    private $user = null;
+    private ?User $user = null;
+
+    #[ORM\ManyToOne(targetEntity: Company::class, inversedBy: 'contacts', cascade: ["persist"])]
+    private ?Company $company = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $mail = null;
 
     public function getId(): ?int
     {
@@ -46,6 +52,30 @@ class Contact
     public function setUser(?User $user): static
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getCompany(): ?Company
+    {
+        return $this->company;
+    }
+
+    public function setCompany(?Company $company): static
+    {
+        $this->company = $company;
+
+        return $this;
+    }
+
+    public function getMail(): ?string
+    {
+        return $this->mail;
+    }
+
+    public function setMail(?string $mail): static
+    {
+        $this->mail = $mail;
 
         return $this;
     }
