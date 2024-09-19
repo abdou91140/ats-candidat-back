@@ -66,32 +66,16 @@
             "tests/bootstrap.php"
         ]
     },
-    "scheb/2fa-bundle": {
-        "version": "7.3",
+    "symfony/apache-pack": {
+        "version": "1.0",
         "recipe": {
-            "repo": "github.com/symfony/recipes",
+            "repo": "github.com/symfony/recipes-contrib",
             "branch": "main",
-            "version": "6.0",
-            "ref": "1e6f68089146853a790b5da9946fc5974f6fcd49"
+            "version": "1.0",
+            "ref": "0f18b4decdf5695d692c1d0dfd65516a07a6adf1"
         },
         "files": [
-            "config/packages/scheb_2fa.yaml",
-            "config/routes/scheb_2fa.yaml"
-        ]
-    },
-    "symfony/asset-mapper": {
-        "version": "7.0",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "main",
-            "version": "6.4",
-            "ref": "6c28c471640cc2c6e60812ebcb961c526ef8997f"
-        },
-        "files": [
-            "assets/app.js",
-            "assets/styles/app.css",
-            "config/packages/asset_mapper.yaml",
-            "importmap.php"
+            "public/.htaccess"
         ]
     },
     "symfony/console": {
@@ -262,21 +246,6 @@
         "files": [
             "config/packages/web_profiler.yaml",
             "config/routes/web_profiler.yaml"
-        ]
-    },
-    "twig/extra-bundle": {
-        "version": "v3.9.3"
-    },
-    "vich/uploader-bundle": {
-        "version": "2.3",
-        "recipe": {
-            "repo": "github.com/symfony/recipes-contrib",
-            "branch": "main",
-            "version": "1.13",
-            "ref": "1b3064c2f6b255c2bc2f56461aaeb76b11e07e36"
-        },
-        "files": [
-            "config/packages/vich_uploader.yaml"
         ]
     }
 }
