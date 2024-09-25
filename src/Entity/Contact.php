@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\ContactRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ContactRepository::class)]
 #[ApiResource]
@@ -16,15 +17,18 @@ class Contact
     private ?int $id = null;
 
     #[ORM\Column]
+    #[Groups(['company:output'])]
     private  $fullname = null;
 
     #[ORM\ManyToOne(User::class,inversedBy:"contacts")]
+    #[Groups(['company:output'])]
     private ?User $user = null;
 
     #[ORM\ManyToOne(targetEntity: Company::class, inversedBy: 'contacts', cascade: ["persist"])]
     private ?Company $company = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['company:output'])]
     private ?string $mail = null;
 
     public function getId(): ?int
